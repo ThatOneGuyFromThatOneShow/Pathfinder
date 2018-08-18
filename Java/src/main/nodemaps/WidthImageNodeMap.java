@@ -5,6 +5,7 @@ import main.nodes.Node;
 import java.io.File;
 import java.util.ArrayList;
 
+//TODO JavaDoc
 public class WidthImageNodeMap extends ImageNodeMap {
     private int safeWidth = 0;
     private int actualWidth = 0;

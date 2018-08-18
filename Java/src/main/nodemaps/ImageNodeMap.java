@@ -3,7 +3,6 @@ package main.nodemaps;
 import main.nodes.Node;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.io.File;
@@ -12,6 +11,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 
+//TODO JavDoc
 public class ImageNodeMap implements NodeMap {
     protected BufferedImage image;
     private boolean readable;

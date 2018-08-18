@@ -13,7 +13,7 @@ public interface NodeMap {
      * @param node The location node to check.
      * @return Effort that should be used to avoid this node.
      */
-    public int getValueFromNode(Node node);
+    int getValueFromNode(Node node);
 
     /**
      * Returns whether a node is not reachable (value of 10).
@@ -21,7 +21,7 @@ public interface NodeMap {
      * @param node The node to check.
      * @return True if node is unreachable.
      */
-    public boolean isOccupied(Node node);
+    boolean isOccupied(Node node);
 
     /**
      * Returns an array of all accessible nodes neighboring node.
@@ -29,7 +29,7 @@ public interface NodeMap {
      * @param node The node to check.
      * @return All neighboring nodes that are not occupied (value of 10).
      */
-    public Node[] getNeighbors(Node node);
+    Node[] getNeighbors(Node node);
 
     /**
      * Calculates the cost of moving in a straight line from node1 to node2. This ignores obstacle collision.
@@ -38,5 +38,5 @@ public interface NodeMap {
      * @param node2 The ending position.
      * @return The cost of moving.
      */
-    public double calculateCost(Node node1, Node node2);
+    double calculateCost(Node node1, Node node2);
 }
