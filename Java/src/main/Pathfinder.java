@@ -1,9 +1,7 @@
 package main;
 
-import jdk.nashorn.internal.ir.WhileNode;
 import main.aStar.AStarResult;
 import main.nodemaps.NodeMap;
-import main.nodemaps.WidthImageNodeMap;
 import main.nodes.Node;
 import main.nodes.NodeComparatorLowPriority;
 import main.nodes.PriorityNode;
@@ -57,34 +55,44 @@ public class Pathfinder {
      * @return an AStartResult object.
      */
     public AStarResult aStarSearch(Node start, Node goal) {
+        //A map every where every node came from
         Map<Node, Node> nodeTrace = new HashMap<>();
+        //A map of the cost to get to a node, if you used the current path
         Map<Node, Double> costOfNode = new HashMap<>();
+        //A queue of nodes to check with a priority. Priority is how likely it will be that a path will get to the end the fastest. Lower priority means it will be checked first.
         PriorityQueue<PriorityNode> queue = new PriorityQueue<>(new NodeComparatorLowPriority());
 
+        //Add the start node to the PriorityQueue and add a cost of 0.
         Node currentNode = start;
         nodeTrace.put(start, null);
         costOfNode.put(start, 0.0);
         queue.add(new PriorityNode(start, 0));
 
+        //Loop through checking the node at the top of the queue until there are no more nodes in the queue. Or the current node pulled from the queue equals the goal node.
         while (!queue.isEmpty()) {
             currentNode = queue.poll().toNode();
 
             if (currentNode.equals(goal))
                 break;
 
+            //Gets all the neighbors of the current node, and sames them into nextNode.
             for (Node nextNode : nodeMap.getNeighbors(currentNode)) {
-                double cost = costOfNode.get(currentNode) + nodeMap.calculateCost(currentNode, nextNode);
+                double cost = costOfNode.get(currentNode) + nodeMap.calculateCost(currentNode, nextNode); //Calculates the cost of getting to nextNode.
+                //If next node is currently not in the cost map, or the computed cost is less the saved cost.
                 if (!costOfNode.containsKey(nextNode) || cost < costOfNode.get(nextNode)) {
-                    costOfNode.put(nextNode, cost);
-                    nodeTrace.put(nextNode, currentNode);
-                    double priority = cost + heuristic(currentNode, nextNode) + nodeMap.getValueFromNode(nextNode)/2;
-                    queue.add(new PriorityNode(nextNode, priority));
+                    costOfNode.put(nextNode, cost); //Save the cost
+                    nodeTrace.put(nextNode, currentNode); //Save where next node came from. Aka currentNode.
+                    double priority = cost + heuristic(currentNode, nextNode) + nodeMap.getValueFromNode(nextNode)/2; //Calculate the priority. Cost + distance from goal + priority value from nodeMap.
+                    queue.add(new PriorityNode(nextNode, priority)); //Adds the current node to the PriorityQueue.
                 }
             }
         }
 
+        //Return the result saved in a AStarResult object.
         return new AStarResult(nodeTrace, costOfNode, start, goal, currentNode);
     }
+
+    //TODO refactor the pathMaking methods into AStarResult. Because they can only be used after generating a result it makes more sense for them to be in the result class. This would also make it more intuitive for the user.
 
     /**
      * Takes the results from an A* search and reconstructs it into a usable node path array.
@@ -144,6 +152,8 @@ public class Pathfinder {
      */
     public Node[] makeWaypointPath(Node[] path, int actualWidth) {
 
+        //Removes nodes that are directly next to each other and are in a straight line.
+        //On a high resolution bitmap this helps reduce the work by the line segment identifier.
         ArrayList<Node> nodes = new ArrayList<>();
         nodes.add(path[0]);
         for (int i = 1; i < path.length-1; i++) {
@@ -160,10 +170,16 @@ public class Pathfinder {
         nodes.add(path[path.length-1]);
 
 
-        //split nodes into segments of nodes
+        //Compute a series of lines that are a minimum of half actualWidth away from any occupied nodes.
         int lastIndexOfSegment = 0;
         ArrayList<Node> lastNodes = new ArrayList<>();
         lastNodes.add(nodes.get(0));
+
+        //Takes the first node then draws a line to the 2nd, then 3rd, etc. Once the line collides with an occupied spot
+        // it backs up one (ensuring the line has no collision), and saves the starting node of the segment.
+        // The next segment starts where the previous one ended. Repeats until the last node is the end node.
+
+        //Loop through starting nodes, the starting node is equal to the last node of the previous segment.
         while (true) {
             if (lastIndexOfSegment == nodes.size() - 1)
                 break;
@@ -171,6 +187,7 @@ public class Pathfinder {
             Node startingNode = nodes.get(lastIndexOfSegment);
             Node currentNode;
 
+            //Make a line from startingNode to currentNode. Each iteration moves current node to the next node in nodes.
             boolean shouldContinue = true;
             while (shouldContinue) {
                 if (lastIndexOfSegment == nodes.size() - 1)
@@ -186,9 +203,13 @@ public class Pathfinder {
 
                 int xIntercept = startingNode.getY() - (slope * startingNode.getX());
 
+                //If slope is infinite iterate by y instead of x.
                 int minItr = (infSlope) ? Math.min(currentNode.getY(), startingNode.getY()) : Math.min(currentNode.getX(), startingNode.getX());
                 int maxItr = (infSlope) ? Math.max(currentNode.getY(), startingNode.getY()) : Math.max(currentNode.getX(), startingNode.getX());
+
+                //Check collision on every point on the line startingNode-currentNode
                 for (int itr = minItr; itr < maxItr; itr++) {
+                    //Calculate x and y based on the slope and x-intercept.
                     int x, y;
                     if (!infSlope) {
                         x = itr;
@@ -201,7 +222,7 @@ public class Pathfinder {
                         y = itr;
                     }
 
-                    //check collision on point. If collision refer to the previous point.
+                    //check collision on point.
                     int safeWidthCorner = (int) Math.ceil(Math.sqrt(2) * actualWidth / 4);
                     Node tn0 = new Node(x + safeWidthCorner, y + safeWidthCorner);
                     Node tn1 = new Node(x + safeWidthCorner, y - safeWidthCorner);
@@ -217,6 +238,7 @@ public class Pathfinder {
                             && !nodeMap.isOccupied(tn3) && !nodeMap.isOccupied(tn4) && !nodeMap.isOccupied(tn5)
                             && !nodeMap.isOccupied(tn6) && !nodeMap.isOccupied(tn7));
 
+                    //If collision use the last collision free node (previous node) as the end point of the segment.
                     if (collision) {
                         lastNodes.add(nodes.get(lastIndexOfSegment));
                         shouldContinue = false;

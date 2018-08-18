@@ -18,7 +18,7 @@ public class Main {
         imgMap.setActualWidth(24);
 
         pathfinder.setNodeMap(imgMap);
-        AStarResult result = pathfinder.aStarSearch(new Node(162, 50), new Node(162, 600));
+        AStarResult result = pathfinder.aStarSearch(new Node(162, 50), new Node(162, 230));
         Node[] path = pathfinder.makePath(result);
 
 
