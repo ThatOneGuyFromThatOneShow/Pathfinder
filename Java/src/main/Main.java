@@ -1,25 +1,38 @@
 package main;
 
 import main.aStar.AStarResult;
+import main.nodemaps.WidthImageNodeMap;
 import main.nodes.Node;
-import main.nodemaps.HardNodeMap;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class Main {
     public static void main(String args[]) {
         Pathfinder pathfinder = new Pathfinder();
 
-        int[][] graph = {{0, 10, 0, 0},
-                        {0, 10, 0, 0},
-                        {0, 0, 10, 0},
-                        {0, 0, 10, 0}};
-        HardNodeMap nodeMap = new HardNodeMap(graph);
-        pathfinder.setNodeMap(nodeMap);
-        AStarResult result = pathfinder.aStarSearch(new Node(0, 0), new Node(3, 3));
+        WidthImageNodeMap imgMap = new WidthImageNodeMap("images/Picture1.png");
+        imgMap.setSafeWidth(24);
+
+        pathfinder.setNodeMap(imgMap);
+        AStarResult result = pathfinder.aStarSearch(new Node(162, 50), new Node(162, 600));
         Node[] path = pathfinder.makePath(result);
+
         Node[] waypointPath = pathfinder.makeWaypointPath(path);
 
-        for (Node i : path) {
+        for (Node i : waypointPath) {
             System.out.println(String.format("(%d, %d)", i.getX(), i.getY()));
+        }
+
+        BufferedImage img = imgMap.makePathImage(path);
+        File file = new File("E:\\workspace\\Pathfinder\\Java\\src\\main\\images\\output.png");
+        try {
+            file.createNewFile();
+            ImageIO.write(img, "png", file);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
     }

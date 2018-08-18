@@ -2,6 +2,7 @@ package main;
 
 import main.aStar.AStarResult;
 import main.nodemaps.NodeMap;
+import main.nodemaps.WidthImageNodeMap;
 import main.nodes.Node;
 import main.nodes.NodeComparatorLowPriority;
 import main.nodes.PriorityNode;
@@ -97,11 +98,11 @@ public class Pathfinder {
         Node startNode = result.getStartNode();
         Node currentNode = result.getGoalNode();
 
+        output.add(currentNode);
         while (!currentNode.equals(startNode)) {
-            output.add(currentNode);
             currentNode = nodeTrace.get(currentNode);
+            output.add(currentNode);
         }
-        output.add(startNode);
 
         Collections.reverse(output);
         return output.toArray(new Node[output.size()]);
@@ -114,6 +115,36 @@ public class Pathfinder {
      * @return A waypoint Node array.
      */
     public Node[] makeWaypointPath(Node[] path) {
+        ArrayList<Node> nodes = new ArrayList<>();
+        nodes.add(path[0]);
+
+        for (int i = 1; i < path.length-1; i++) {
+            int x1 = path[i-1].getX();
+            int y1 = path[i-1].getY();
+            int x2 = path[i].getX();
+            int y2 = path[i].getY();
+            int x3 = path[i+1].getX();
+            int y3 = path[i+1].getY();
+
+            if (Math.atan2(y3 - y2, x3 - x2) != Math.atan2(y2 - y1, x2 - x1))
+                nodes.add(path[i]);
+        }
+        nodes.add(path[path.length-1]);
+
+        return nodes.toArray(new Node[nodes.size()]);
+    }
+
+    /**
+     * WIP
+     *
+     * @param path
+     * @param safeWidth
+     * @param actualWidth
+     * @return
+     */
+    public Node[] makeWaypointPath(Node[] path, int safeWidth, int actualWidth) { //TODO
+       int widthDiff = safeWidth = actualWidth;
+
         ArrayList<Node> nodes = new ArrayList<>();
         nodes.add(path[0]);
 

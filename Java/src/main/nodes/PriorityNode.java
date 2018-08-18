@@ -48,7 +48,10 @@ public class PriorityNode extends Node {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof PriorityNode && hashCode() == obj.hashCode();
+        if (!(obj instanceof PriorityNode))
+            return false;
+        PriorityNode objN = (PriorityNode) obj;
+        return getX() == objN.getX() && getY() == objN.getY() && getPriority() == objN.getPriority();
     }
 
     /**

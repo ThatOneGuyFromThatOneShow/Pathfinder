@@ -46,6 +46,6 @@ public class Node {
 
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof Node && hashCode() == obj.hashCode();
+        return obj instanceof Node && getX() == ((Node) obj).getX() && getY() == ((Node) obj).getY();
     }
 }
