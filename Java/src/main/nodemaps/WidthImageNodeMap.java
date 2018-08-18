@@ -60,10 +60,11 @@ public class WidthImageNodeMap extends ImageNodeMap {
 
                     if (tx >= 0 && tx < image.getWidth() && ty >= 0 && ty < image.getHeight()) {
                         if (!isOccupied(testNode)) {
-                            Node tn0 = new Node(x + (safeWidth /2), y + (safeWidth /2));
-                            Node tn1 = new Node(x + (safeWidth /2), y - (safeWidth /2));
-                            Node tn2 = new Node(x - (safeWidth /2), y + (safeWidth /2));
-                            Node tn3 = new Node(x - (safeWidth /2), y - (safeWidth /2));
+                            int safeWidthCorner = (int) Math.ceil(Math.sqrt(2) * safeWidth / 4);
+                            Node tn0 = new Node(x + safeWidthCorner, y + safeWidthCorner);
+                            Node tn1 = new Node(x + safeWidthCorner, y - safeWidthCorner);
+                            Node tn2 = new Node(x - safeWidthCorner, y + safeWidthCorner);
+                            Node tn3 = new Node(x - safeWidthCorner, y - safeWidthCorner);
 
                             Node tn4 = new Node(x, y + (safeWidth /2));
                             Node tn5 = new Node(x + (safeWidth /2), y);

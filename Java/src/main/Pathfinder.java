@@ -1,5 +1,6 @@
 package main;
 
+import jdk.nashorn.internal.ir.WhileNode;
 import main.aStar.AStarResult;
 import main.nodemaps.NodeMap;
 import main.nodemaps.WidthImageNodeMap;
@@ -135,19 +136,16 @@ public class Pathfinder {
     }
 
     /**
-     * WIP
+     * Takes a path and actual width and produces a point to point straight line trajectory.
      *
-     * @param path
-     * @param safeWidth
-     * @param actualWidth
-     * @return
+     * @param path A node path as outputted from makePath().
+     * @param actualWidth The actual width.
+     * @return A waypoint trajectory.
      */
-    public Node[] makeWaypointPath(Node[] path, int safeWidth, int actualWidth) { //TODO
-       int widthDiff = safeWidth = actualWidth;
+    public Node[] makeWaypointPath(Node[] path, int actualWidth) {
 
         ArrayList<Node> nodes = new ArrayList<>();
         nodes.add(path[0]);
-
         for (int i = 1; i < path.length-1; i++) {
             int x1 = path[i-1].getX();
             int y1 = path[i-1].getY();
@@ -161,7 +159,77 @@ public class Pathfinder {
         }
         nodes.add(path[path.length-1]);
 
-        return nodes.toArray(new Node[nodes.size()]);
+
+        //split nodes into segments of nodes
+        int lastIndexOfSegment = 0;
+        ArrayList<Node> lastNodes = new ArrayList<>();
+        lastNodes.add(nodes.get(0));
+        while (true) {
+            if (lastIndexOfSegment == nodes.size() - 1)
+                break;
+
+            Node startingNode = nodes.get(lastIndexOfSegment);
+            Node currentNode;
+
+            boolean shouldContinue = true;
+            while (shouldContinue) {
+                if (lastIndexOfSegment == nodes.size() - 1)
+                    break;
+                currentNode = nodes.get(lastIndexOfSegment + 1);
+
+                boolean infSlope = false;
+                int slope = 0;
+                if (startingNode.getX() == currentNode.getX())
+                    infSlope = true;
+                else
+                    slope = (startingNode.getY() - currentNode.getY()) / (startingNode.getX() - currentNode.getX());
+
+                int xIntercept = startingNode.getY() - (slope * startingNode.getX());
+
+                int minItr = (infSlope) ? Math.min(currentNode.getY(), startingNode.getY()) : Math.min(currentNode.getX(), startingNode.getX());
+                int maxItr = (infSlope) ? Math.max(currentNode.getY(), startingNode.getY()) : Math.max(currentNode.getX(), startingNode.getX());
+                for (int itr = minItr; itr < maxItr; itr++) {
+                    int x, y;
+                    if (!infSlope) {
+                        x = itr;
+                        y = (slope * x) + xIntercept;
+                    } else if (Math.abs(slope) == 0) {
+                        x = itr;
+                        y = startingNode.getY();
+                    } else {
+                        x = startingNode.getX();
+                        y = itr;
+                    }
+
+                    //check collision on point. If collision refer to the previous point.
+                    int safeWidthCorner = (int) Math.ceil(Math.sqrt(2) * actualWidth / 4);
+                    Node tn0 = new Node(x + safeWidthCorner, y + safeWidthCorner);
+                    Node tn1 = new Node(x + safeWidthCorner, y - safeWidthCorner);
+                    Node tn2 = new Node(x - safeWidthCorner, y + safeWidthCorner);
+                    Node tn3 = new Node(x - safeWidthCorner, y - safeWidthCorner);
+
+                    Node tn4 = new Node(x, y + (actualWidth / 2));
+                    Node tn5 = new Node(x + (actualWidth / 2), y);
+                    Node tn6 = new Node(x, y - (actualWidth / 2));
+                    Node tn7 = new Node(x - (actualWidth / 2), y);
+
+                    boolean collision = !(!nodeMap.isOccupied(tn0) && !nodeMap.isOccupied(tn1) && !nodeMap.isOccupied(tn2)
+                            && !nodeMap.isOccupied(tn3) && !nodeMap.isOccupied(tn4) && !nodeMap.isOccupied(tn5)
+                            && !nodeMap.isOccupied(tn6) && !nodeMap.isOccupied(tn7));
+
+                    if (collision) {
+                        lastNodes.add(nodes.get(lastIndexOfSegment));
+                        shouldContinue = false;
+                        break;
+                    }
+                }
+                lastIndexOfSegment++;
+            }
+
+        }
+        lastNodes.add(nodes.get(nodes.size()-1));
+
+        return lastNodes.toArray(new Node[lastNodes.size()]);
     }
 
     /**

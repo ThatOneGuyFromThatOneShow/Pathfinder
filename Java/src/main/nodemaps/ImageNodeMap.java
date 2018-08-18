@@ -75,6 +75,8 @@ public class ImageNodeMap implements NodeMap {
     }
 
     public boolean isOccupied(Node node) {
+        if (node.getX() < 0 || node.getX() >= image.getWidth() || node.getY() < 0 || node.getY() >= image.getHeight())
+            return true;
         return getValueFromNode(node) == 10;
     }
 
@@ -86,11 +88,9 @@ public class ImageNodeMap implements NodeMap {
                     int x = node.getX() + xi;
                     int y = node.getY() + yi;
 
-                    if (x >= 0 && x < image.getWidth() && y >= 0 && y < image.getHeight()) {
-                        Node curNode = new Node(x, y);
-                        if (!isOccupied(curNode))
-                            neighbors.add(curNode);
-                    }
+                    Node curNode = new Node(x, y);
+                    if (!isOccupied(curNode))
+                        neighbors.add(curNode);
                 }
             }
         }

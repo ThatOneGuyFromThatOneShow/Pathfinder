@@ -14,19 +14,21 @@ public class Main {
         Pathfinder pathfinder = new Pathfinder();
 
         WidthImageNodeMap imgMap = new WidthImageNodeMap("images/Picture1.png");
-        imgMap.setSafeWidth(24);
+        imgMap.setSafeWidth(40);
+        imgMap.setActualWidth(24);
 
         pathfinder.setNodeMap(imgMap);
         AStarResult result = pathfinder.aStarSearch(new Node(162, 50), new Node(162, 600));
         Node[] path = pathfinder.makePath(result);
 
-        Node[] waypointPath = pathfinder.makeWaypointPath(path);
+
+        Node[] waypointPath = pathfinder.makeWaypointPath(path, imgMap.getActualWidth());
 
         for (Node i : waypointPath) {
-            System.out.println(String.format("(%d, %d)", i.getX(), i.getY()));
+            System.out.println(i.getX() + "   " + i.getY());
         }
 
-        BufferedImage img = imgMap.makePathImage(path);
+        BufferedImage img = imgMap.makePathImage(waypointPath);
         File file = new File("E:\\workspace\\Pathfinder\\Java\\src\\main\\images\\output.png");
         try {
             file.createNewFile();

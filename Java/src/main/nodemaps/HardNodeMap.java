@@ -22,6 +22,8 @@ public class HardNodeMap implements NodeMap {
     }
 
     public boolean isOccupied(Node node) {
+        if (node.getX() < 0 || node.getX() >= graph[0].length || node.getY() < 0 || node.getY() >= graph.length)
+            return true;
         return getValueFromNode(node) >= 10;
     }
 
@@ -33,11 +35,9 @@ public class HardNodeMap implements NodeMap {
                     int x = node.getX() + xi;
                     int y = node.getY() + yi;
 
-                    if (x >= 0 && x < graph[0].length && y >= 0 && y < graph.length) {
-                        Node curNode = new Node(x, y);
-                        if (!isOccupied(curNode))
-                            neighbors.add(curNode);
-                    }
+                    Node curNode = new Node(x, y);
+                    if (!isOccupied(curNode))
+                        neighbors.add(curNode);
                 }
             }
         }
