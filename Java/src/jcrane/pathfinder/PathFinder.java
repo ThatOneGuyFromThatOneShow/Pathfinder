@@ -1,10 +1,10 @@
-package main;
+package jcrane.pathfinder;
 
-import main.aStar.AStarResult;
-import main.nodemaps.NodeMap;
-import main.nodes.Node;
-import main.nodes.NodeComparatorLowPriority;
-import main.nodes.PriorityNode;
+import jcrane.pathfinder.aStar.AStarResult;
+import jcrane.pathfinder.nodemaps.NodeMap;
+import jcrane.pathfinder.nodes.Node;
+import jcrane.pathfinder.nodes.NodeComparatorLowPriority;
+import jcrane.pathfinder.nodes.PriorityNode;
 
 import java.util.*;
 
@@ -24,7 +24,7 @@ public class PathFinder {
     }
 
     /**
-     * Set the NodeMap reference for the pathfinder algorithm to use.
+     * Set the NodeMap reference for the jcrane.pathfinder algorithm to use.
      *
      * @param nodeMap The map of surroundings.
      */

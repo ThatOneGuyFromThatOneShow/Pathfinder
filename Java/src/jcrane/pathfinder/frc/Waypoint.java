@@ -1,4 +1,4 @@
-package main.frc;
+package jcrane.pathfinder.frc;
 
 public class Waypoint {
   private double x, y, angle;

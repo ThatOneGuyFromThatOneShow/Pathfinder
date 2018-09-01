@@ -1,6 +1,6 @@
-package main.nodemaps;
+package jcrane.pathfinder.nodemaps;
 
-import main.nodes.Node;
+import jcrane.pathfinder.nodes.Node;
 
 import java.io.File;
 import java.util.ArrayList;

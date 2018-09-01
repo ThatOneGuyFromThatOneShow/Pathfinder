@@ -1,4 +1,4 @@
-package main.nodemaps;
+package jcrane.pathfinder.nodemaps;
 
 /**
  * An ObjectMap is a map where you define entire object instead of individual nodes.

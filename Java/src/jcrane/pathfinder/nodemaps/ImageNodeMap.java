@@ -1,6 +1,6 @@
-package main.nodemaps;
+package jcrane.pathfinder.nodemaps;
 
-import main.nodes.Node;
+import jcrane.pathfinder.nodes.Node;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

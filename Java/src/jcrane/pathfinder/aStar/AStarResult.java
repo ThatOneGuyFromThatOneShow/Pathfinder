@@ -1,10 +1,10 @@
-package main.aStar;
+package jcrane.pathfinder.aStar;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import main.nodemaps.NodeMap;
-import main.nodemaps.WidthMap;
-import main.nodes.Node;
+import jcrane.pathfinder.nodemaps.NodeMap;
+import jcrane.pathfinder.nodemaps.WidthMap;
+import jcrane.pathfinder.nodes.Node;
 
 import java.util.Map;
 

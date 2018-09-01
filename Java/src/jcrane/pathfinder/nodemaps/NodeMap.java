@@ -1,6 +1,6 @@
-package main.nodemaps;
+package jcrane.pathfinder.nodemaps;
 
-import main.nodes.Node;
+import jcrane.pathfinder.nodes.Node;
 
 /**
  * Basic interface for a NodeMap. Nodes start at (x, y) = (0, 0). Nodes should never have a negative x or y!

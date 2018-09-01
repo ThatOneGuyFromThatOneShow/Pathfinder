@@ -1,4 +1,4 @@
-package main.nodes;
+package jcrane.pathfinder.nodes;
 
 import java.util.Comparator;
 

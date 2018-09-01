@@ -1,8 +1,8 @@
-package main.frc;
+package jcrane.pathfinder.frc;
 
-import main.PathFinder;
-import main.aStar.AStarResult;
-import main.nodes.Node;
+import jcrane.pathfinder.PathFinder;
+import jcrane.pathfinder.aStar.AStarResult;
+import jcrane.pathfinder.nodes.Node;
 
 /**
  * FRCPathFinder uses an A* algorithm to find the shortest route from a starting location to a goal location, while avoiding obstacles.

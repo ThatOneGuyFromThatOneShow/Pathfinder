@@ -1,4 +1,4 @@
-package main.nodemaps;
+package jcrane.pathfinder.nodemaps;
 
 public interface WidthMap {
   void setSafeWidth(int w);

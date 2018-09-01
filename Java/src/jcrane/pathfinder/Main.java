@@ -1,11 +1,11 @@
-package main;
+package jcrane.pathfinder;
 
-import main.frc.FRCPathFinder;
-import main.frc.FRCResult;
-import main.frc.MotorOutput;
-import main.frc.Waypoint;
-import main.nodemaps.WidthImageNodeMap;
-import main.nodes.Node;
+import jcrane.pathfinder.frc.FRCPathFinder;
+import jcrane.pathfinder.frc.FRCResult;
+import jcrane.pathfinder.frc.MotorOutput;
+import jcrane.pathfinder.frc.Waypoint;
+import jcrane.pathfinder.nodemaps.WidthImageNodeMap;
+import jcrane.pathfinder.nodes.Node;
 
 public class Main {
     public static void main(String args[]) {

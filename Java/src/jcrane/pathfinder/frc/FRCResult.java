@@ -1,9 +1,9 @@
-package main.frc;
+package jcrane.pathfinder.frc;
 
 import java.util.Map;
-import main.aStar.AStarResult;
-import main.nodemaps.NodeMap;
-import main.nodes.Node;
+import jcrane.pathfinder.aStar.AStarResult;
+import jcrane.pathfinder.nodemaps.NodeMap;
+import jcrane.pathfinder.nodes.Node;
 
 /**
  * A basic class for holding and using information returned from an A* FRCPathFinder search.
