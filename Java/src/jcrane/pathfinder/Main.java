@@ -6,6 +6,7 @@ import jcrane.pathfinder.frc.MotorOutput;
 import jcrane.pathfinder.frc.Waypoint;
 import jcrane.pathfinder.nodemaps.WidthImageNodeMap;
 import jcrane.pathfinder.nodes.Node;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 public class Main {
     public static void main(String args[]) {
@@ -28,20 +29,22 @@ public class Main {
 
         double curX = 162.0/12.0, curY = 50.0/12.0, curAngle = 0;
         while(!mtr.isFinished()) { //Mocks a accelerometer/gyro to test the speed output method
-            double[] lr = mtr.getSpeed(curX, curY, curAngle);
+            double distance = 0.01;
+
+            double[] lr = mtr.getSpeed(distance, curAngle);
 
             double left = lr[0], right = lr[1];
 
-            //System.out.println(String.format("%f, %f, %f", curX * 12, curY * 12, curAngle));
+            System.out.println(String.format("%f, %f, %f", mtr.getCurrentX() * 12, mtr.getCurrentY() * 12, curAngle));
             //System.out.println(String.format("%f, %f", left, right));
 
             curAngle += (left - right);
             curAngle %= 360;
             curAngle = curAngle > 0 ? curAngle : 360 - curAngle;
 
-            double angle = Math.toRadians(curAngle);
-            curX += -.01 * Math.sin(angle);
-            curY += .01 * Math.cos(angle);
+//            double angle = Math.toRadians(curAngle);
+//            curX += -.01 * Math.sin(angle);
+//            curY += .01 * Math.cos(angle);
 
             try {
                 Thread.sleep(0);
