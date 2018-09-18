@@ -5,7 +5,7 @@ import jcrane.pathfinder.nodes.Node;
 public class MakeJaciWaypoint {
 
     //Assumes starting angle of 0
-    public JaciWaypoint[] pathToJaciWaypoints(Node[] nodes, double endingAngle) {
+    public static JaciWaypoint[] pathToJaciWaypoints(Node[] nodes, double endingAngle) {
         JaciWaypoint[] JaciWaypoints = new JaciWaypoint[nodes.length-1];
 
         Node firstNode = nodes[0];
@@ -17,6 +17,7 @@ public class MakeJaciWaypoint {
             int curY = nodes[i].getY();
             double deltaAngle = Math.atan2(nextX - curX, nextY - curY);
 
+            //FIXME must insure x and y are inches before turning them into meteres
             JaciWaypoints[i-1] = new JaciWaypoint((curY - firstNode.getY()) * 0.3048, (curX - firstNode.getX()) * 0.3048, -deltaAngle);
         }
         endingAngle = endingAngle > 180 ? endingAngle - 360 : endingAngle;
