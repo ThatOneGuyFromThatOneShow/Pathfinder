@@ -39,4 +39,8 @@ public interface NodeMap {
      * @return The cost of moving.
      */
     double calculateCost(Node node1, Node node2);
+
+    void setResolution(int resolution);
+
+    int getResolution();
 }

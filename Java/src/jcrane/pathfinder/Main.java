@@ -15,11 +15,16 @@ public class Main {
         WidthImageNodeMap imgMap = new WidthImageNodeMap("images/Picture1.png");
         imgMap.setSafeWidth(40);
         imgMap.setActualWidth(24);
+        imgMap.setResolution(12);
 
         pathfinder.setNodeMap(imgMap);
+
         FRCResult result = pathfinder.aStarSearch(new Node(162, 50), new Node(162, 230));
         Waypoint[] nodes = result.pathToWaypoints(0);
-        MotorOutput mtr = new MotorOutput(12, nodes);
+
+        double resolution = imgMap.getResolution();
+
+        MotorOutput mtr = new MotorOutput(resolution, nodes);
 
         for (Waypoint waypoint : nodes) {
             System.out.println(String.format("%f, %f, %f", waypoint.getX(), waypoint.getY(), waypoint.getAngle()));
@@ -27,7 +32,7 @@ public class Main {
 
         System.out.println("\n\n\n\n-----------------------------\n\n\n\n");
 
-        double curX = 162.0/12.0, curY = 50.0/12.0, curAngle = 0;
+        double curX = 162.0/resolution, curY = 50.0/resolution, curAngle = 0;
         while(!mtr.isFinished()) { //Mocks a accelerometer/gyro to test the speed output method
             double distance = 0.01;
 
@@ -35,7 +40,7 @@ public class Main {
 
             double left = lr[0], right = lr[1];
 
-            System.out.println(String.format("%f, %f, %f", mtr.getCurrentX() * 12, mtr.getCurrentY() * 12, curAngle));
+            System.out.println(String.format("%f, %f, %f", mtr.getCurrentX() * resolution, mtr.getCurrentY() * resolution, curAngle));
             //System.out.println(String.format("%f, %f", left, right));
 
             curAngle += (left - right);

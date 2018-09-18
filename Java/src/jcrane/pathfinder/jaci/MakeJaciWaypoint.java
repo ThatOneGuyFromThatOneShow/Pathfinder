@@ -5,7 +5,7 @@ import jcrane.pathfinder.nodes.Node;
 public class MakeJaciWaypoint {
 
     //Assumes starting angle of 0
-    public static JaciWaypoint[] pathToJaciWaypoints(Node[] nodes, double endingAngle) {
+    public static JaciWaypoint[] pathToJaciWaypoints(Node[] nodes, int resolution, double endingAngle) {
         JaciWaypoint[] JaciWaypoints = new JaciWaypoint[nodes.length-1];
 
         Node firstNode = nodes[0];
@@ -16,13 +16,15 @@ public class MakeJaciWaypoint {
             int curX = nodes[i].getX();
             int curY = nodes[i].getY();
             double deltaAngle = Math.atan2(nextX - curX, nextY - curY);
-
-            //FIXME must insure x and y are inches before turning them into meteres
-            JaciWaypoints[i-1] = new JaciWaypoint((curY - firstNode.getY()) * 0.3048, (curX - firstNode.getX()) * 0.3048, -deltaAngle);
+            
+            JaciWaypoints[i-1] = new JaciWaypoint((curY - firstNode.getY()) / (double) resolution * 3.6576, (curX - firstNode.getX()) / (double) resolution * 3.6576, -deltaAngle);
         }
-        endingAngle = endingAngle > 180 ? endingAngle - 360 : endingAngle;
-        endingAngle = -Math.toRadians(endingAngle);
-        JaciWaypoints[JaciWaypoints.length-1] = new JaciWaypoint((nodes[nodes.length-1].getY() - firstNode.getY()) * 0.3048, (nodes[nodes.length-1].getX() - firstNode.getX()) * 0.3048, endingAngle);
+
+        double transEndAngle;
+        transEndAngle = (endingAngle > 180) ? (endingAngle - 360) : endingAngle;
+        transEndAngle = -Math.toRadians(transEndAngle);
+
+        JaciWaypoints[JaciWaypoints.length-1] = new JaciWaypoint((nodes[nodes.length-1].getY() - firstNode.getY()) * 0.3048, (nodes[nodes.length-1].getX() - firstNode.getX()) * 0.3048, transEndAngle);
 
         return JaciWaypoints;
     }

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 //TODO JavDoc
 public class ImageNodeMap implements NodeMap {
     protected BufferedImage image;
+    private int resolution;
     private boolean readable;
     private ArrayList<Integer> colorReference = new ArrayList<>(11);
     public ColorModel color;
@@ -99,6 +100,14 @@ public class ImageNodeMap implements NodeMap {
 
     public double calculateCost(Node node1, Node node2) {
         return Math.hypot(node1.getX() - node2.getX(), node1.getY() - node2.getY());
+    }
+
+    public void setResolution(int resolution) {
+        this.resolution = resolution;
+    }
+
+    public int getResolution() {
+        return resolution;
     }
 
     public BufferedImage makePathImage(Node[] path) {

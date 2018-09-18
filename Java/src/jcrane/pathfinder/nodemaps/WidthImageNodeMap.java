@@ -9,33 +9,40 @@ import java.util.ArrayList;
 public class WidthImageNodeMap extends ImageNodeMap implements WidthMap {
     private int safeWidth = 0;
     private int actualWidth = 0;
+    private int resolution = 0; //Nodes per foot in either x or y direction. Note this is not nodes per foot x * nodes per foot y.
 
     public WidthImageNodeMap(File file) {
         super(file);
     }
 
-    public WidthImageNodeMap(File file, int safeWidth, int actualWidth) {
+    public WidthImageNodeMap(File file, int safeWidth, int actualWidth, int resolution) {
         super(file);
         setSafeWidth(safeWidth);
         setActualWidth(actualWidth);
+        setResolution(resolution);
     }
 
     public WidthImageNodeMap(String string) {
         super(string);
     }
 
-    public WidthImageNodeMap(String string,  int safeWidth, int actualWidth) {
+    public WidthImageNodeMap(String string,  int safeWidth, int actualWidth, int resolution) {
         super(string);
         setSafeWidth(safeWidth);
         setActualWidth(actualWidth);
+        setResolution(resolution);
     }
 
-    public void setSafeWidth(int w) {
-        safeWidth = w;
+    public void setSafeWidth(int safeWidth) {
+        this.safeWidth = safeWidth;
     }
 
-    public void setActualWidth(int w) {
-        actualWidth = w;
+    public void setActualWidth(int actualWidth) {
+        this.actualWidth = actualWidth;
+    }
+
+    public void setResolution(int resolution) {
+        this.resolution = resolution;
     }
 
     public int getSafeWidth() {
@@ -44,6 +51,10 @@ public class WidthImageNodeMap extends ImageNodeMap implements WidthMap {
 
     public int getActualWidth() {
         return actualWidth;
+    }
+
+    public int getResolution() {
+        return resolution;
     }
 
     @Override

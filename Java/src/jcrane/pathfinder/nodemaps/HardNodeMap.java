@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class HardNodeMap implements NodeMap {
     private int[][] graph;
+    private int resolution;
 
     /**
      * A 2d map with 0 being an available location and 10 being a unavailable location.
@@ -15,6 +16,16 @@ public class HardNodeMap implements NodeMap {
      */
     public HardNodeMap(int[][] graph) {
         this.graph = graph;
+    }
+
+    @Override
+    public void setResolution(int resolution) {
+        this.resolution = resolution;
+    }
+
+    @Override
+    public int getResolution() {
+        return resolution;
     }
 
     public int getValueFromNode(Node node) {
