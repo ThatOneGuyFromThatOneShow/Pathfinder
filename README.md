@@ -48,8 +48,22 @@ The PathFinder class is what generates the path. The class takes a NodeMap on cr
 ### Result / AStarResult
 An instance of AStarResult doesn't only hold the raw data from path generation, but it also holds all the methods to make something useful from the raw data.
 
-*MakePath* this takes the raw generated path stored in the result class and just returns the actual path as an array of nodes. Position 0 being the start node and the last position being the ending node.
+*makePath* this takes the raw generated path stored in the result class and just returns the actual path as an array of nodes. Position 0 being the start node and the last position being the ending node.
 
-*MakeStraightLinePath* takes the path generated from *MakePath* and returns a path made of a the smallest amount of straight lines possible.
+*makeStraightLinePath* takes the path generated from *MakePath* and returns a path made of a the smallest amount of straight lines possible.
 
-*MakeStraightLinePath* with a passed in argument of int *actualWidth* constructs a series of straight lines and checks the collision based on actualWidth. Note this only works with a WidthNode map, where the path was generated from a safe width.
+*makeStraightLinePath* with a passed in argument of int *actualWidth* constructs a series of straight lines and checks the collision based on actualWidth. Note this only works with a WidthNode map, where the path was generated from a safe width.
+
+### Example
+```Java
+Pathfinder pathfinder = new Pathfinder();
+
+WidthImageNodeMap imgMap = new WidthImageNodeMap("images/Picture1.png");
+imgMap.setSafeWidth(40);
+imgMap.setActualWidth(24);
+
+pathfinder.setNodeMap(imgMap);
+AStarResult result = pathfinder.aStarSearch(new Node(162, 50), new Node(162, 230));
+Node[] path = pathfinder.makePath(result);
+Node[] straightLinePath = pathfinder.makeStraightLinePath(path, 24);
+```
