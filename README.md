@@ -50,9 +50,9 @@ An instance of AStarResult doesn't only hold the raw data from path generation, 
 
 *makePath* this takes the raw generated path stored in the result class and just returns the actual path as an array of nodes. Position 0 being the start node and the last position being the ending node.
 
-*makeStraightLinePath* takes the path generated from *MakePath* and returns a path made of a the smallest amount of straight lines possible.
+*makeStraightLinePath* takes the path generated from *MakePath* and returns a path without any of the nodes that lay directly between any other nodes. This shrinks the amount of nodes in the path without actually modifying the path.
 
-*makeStraightLinePath* with a passed in argument of int *actualWidth* constructs a series of straight lines and checks the collision based on actualWidth. Note this only works with a WidthNode map, where the path was generated from a safe width.
+*makeStraightLinePath* with a passed in argument of int *actualWidth* constructs a series of straight lines and checks the collision based on actualWidth. Note this only works with a WidthNode map, where the path was generated from a safe width. This creates an entirely new path.
 
 ### Example
 ```Java
